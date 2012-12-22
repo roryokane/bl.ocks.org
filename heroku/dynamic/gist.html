@@ -42,11 +42,13 @@ d3.json(gistInfoJsonUrl, function(error, info) {
   var formatDate = d3.time.format("%B %-d, %Y"),
       parseDate = d3.time.format.iso.parse;
 
-  if (error) info = {
-    description: "File Not Found",
-    user: {login: "anonymous"},
-    updated_at: new Date
-  };
+  if (error) {
+    info = {
+      description: "File Not Found",
+      user: {login: "anonymous"},
+      updated_at: new Date
+    };
+  }
 
   document.title = info.description || gistId;
 
