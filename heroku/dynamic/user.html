@@ -86,13 +86,14 @@ a.gist:hover .description {
 
 var formatDate = d3.time.format("%B %-d, %Y"),
     parseDate = d3.time.format.iso.parse,
-    user = location.pathname.substring(1),
-    page = 0,
+    userLogin = location.pathname.substring(1),
+    pageNumber = 0,
     fetching,
-    id;
+    id,
+    userInfoJsonUrl;
 
-document.title = "bl.ocks.org - " + user;
-d3.selectAll(".user-login").text(user);
+document.title = "bl.ocks.org - " + userLogin;
+d3.selectAll(".user-login").text(userLogin);
 
 d3.select(window)
     .on("load", maybeFetch)
@@ -100,19 +101,21 @@ d3.select(window)
     .on("resize", maybeFetch);
 
 function maybeFetch() {
-  if (!fetching && page >= 0 && d3.select(".loading").node().getBoundingClientRect().top < innerHeight) {
-    ++page;
+  if (!fetching && pageNumber >= 0 && d3.select(".loading").node().getBoundingClientRect().top < innerHeight) {
+    ++pageNumber;
     fetch();
   }
 }
 
 function fetch() {
+  userGistsJsonUrl = "/" + encodeURIComponent(userLogin) + "/" + pageNumber + ".json" + (id ? "?" + id : "")
+  
   fetching = true;
-  d3.json("/" + encodeURIComponent(user) + "/" + page + ".json" + (id ? "?" + id : ""), function(error, gists) {
+  d3.json(userGistsJsonUrl, function(error, gists) {
     fetching = false;
 
     if (!gists.length) {
-      page = NaN;
+      pageNumber = NaN;
       d3.select(".loading").remove();
       return;
     }
