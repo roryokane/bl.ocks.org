@@ -68,6 +68,10 @@ a:not(:hover) {
 pre, code, textarea {
   font-family: "Menlo", monospace;
   line-height: normal;
+  
+  -moz-tab-size: 2;
+  -o-tab-size: 2;
+  tab-size: 2;
 }
 
 textarea {
